@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Petualangan Pecahan Farah & Beatrix</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax Configuration and Loader -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #EEF2F6 0%, #E3E9F0 100%);
+        }
+        .title-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased text-slate-800">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center w-full">
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-500 text-white p-2 rounded-xl shadow-md">
+                    <!-- SVG Trophy Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-800 title-font tracking-wide">Kuis Master Pecahan</h1>
+                    <p class="text-xs text-amber-600 font-semibold tracking-wider uppercase">Farah & Beatrix Special Edition</p>
+                </div>
+            </div>
+            <!-- Star Counter -->
+            <div class="flex items-center space-x-2 text-sm font-bold bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg shadow-sm">
+                <span>⭐</span>
+                <span id="star-count-display">0</span>
+                <span>Bintang</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-3xl mx-auto px-4 py-6 flex-1 flex flex-col justify-center items-center w-full">
+        
+        <!-- SCREEN 1: START SCREEN -->
+        <div id="screen-start" class="bg-white rounded-3xl p-6 sm:p-10 custom-shadow border border-slate-50 w-full text-center space-y-6 animate-fade-in">
+            <div class="text-6xl">🚀</div>
+            <h2 class="text-3xl font-extrabold text-slate-800 title-font tracking-wide">Misi Pengumpul 30 Bintang Emas</h2>
+            <p class="text-slate-600 max-w-md mx-auto text-base leading-relaxed">
+                Halo Farah dan Beatrix! Bersiaplah untuk menaklukkan 30 tantangan matematika yang terbagi dalam 3 level kesulitan. Kumpulkan bintang sebanyak-banyaknya dan jadilah <strong>Master Arsitek Pecahan</strong>!
+            </p>
+            
+            <!-- Levels Overview Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left max-w-2xl mx-auto pt-2">
+                <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl">
+                    <span class="text-xl">🟢</span>
+                    <h4 class="font-bold text-emerald-800 mt-1 text-sm">Level 1: Dasar</h4>
+                    <p class="text-xs text-emerald-600 mt-0.5">Menyederhanakan & Membandingkan (10 Soal)</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-100 p-4 rounded-2xl">
+                    <span class="text-xl">🟡</span>
+                    <h4 class="font-bold text-amber-800 mt-1 text-sm">Level 2: Campuran</h4>
+                    <p class="text-xs text-amber-600 mt-0.5">Metode "Kali-Tambah" Campuran (10 Soal)</p>
+                </div>
+                <div class="bg-rose-50 border border-rose-100 p-4 rounded-2xl">
+                    <span class="text-xl">🔴</span>
+                    <h4 class="font-bold text-rose-800 mt-1 text-sm">Level 3: Arsitek</h4>
+                    <p class="text-xs text-rose-600 mt-0.5">KPK & Misi Cerita Realistis (10 Soal)</p>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 w-full sm:w-auto">
+                    Mulai Petualangan Kuis!
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: QUIZ INTERACTIVE AREA -->
+        <div id="screen-quiz" class="hidden bg-white rounded-3xl p-6 sm:p-8 custom-shadow border border-slate-50 w-full space-y-6">
+            
+            <!-- Progress and Level Badge -->
+            <div class="flex justify-between items-center flex-wrap gap-2">
+                <span id="level-badge" class="px-3 py-1.5 text-xs font-bold rounded-full"></span>
+                <span id="question-progress" class="text-sm font-semibold text-slate-500">Soal 1 dari 30</span>
+            </div>
+
+            <!-- Custom Progress Bar -->
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="progress-bar-fill" class="bg-indigo-600 h-full transition-all duration-300" style="width: 3.3%"></div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-100 text-center min-h-[140px] flex flex-col justify-center items-center relative">
+                <!-- Navigation History Button (Back) -->
+                <button id="prev-question-btn" onclick="prevQuestion()" class="absolute left-3 top-3 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl transition-all text-xs flex items-center space-x-1 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                    <span>Kembali</span>
+                </button>
+                <h3 id="question-text" class="text-xl sm:text-2xl font-bold text-slate-800 leading-relaxed mt-4">
+                    <!-- Dynamic Mathjax content will load here -->
+                </h3>
+            </div>
+
+            <!-- Answers Layout -->
+            <div id="answers-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Answer buttons will be dynamically created here -->
+            </div>
+
+            <!-- Explanation & Next Area (Hidden initially) -->
+            <div id="explanation-container" class="hidden p-5 rounded-2xl border transition-all duration-200">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span id="explanation-icon" class="text-2xl"></span>
+                    <h4 id="explanation-title" class="font-bold text-base"></h4>
+                </div>
+                <p id="explanation-text" class="text-sm leading-relaxed mb-4"></p>
+                <div class="flex justify-end">
+                    <button onclick="nextQuestion()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-6 py-2.5 rounded-xl flex items-center space-x-2 transition-all">
+                        <span id="next-button-text">Soal Berikutnya</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: RESULTS SCREEN -->
+        <div id="screen-result" class="hidden bg-white rounded-3xl p-6 sm:p-10 custom-shadow border border-slate-50 w-full text-center space-y-6">
+            <div class="text-6xl">🏆</div>
+            <h2 class="text-3xl font-extrabold text-slate-800 title-font tracking-wide">Misi Selesai Dengan Gemilang!</h2>
+            
+            <p class="text-slate-600 max-w-md mx-auto text-base">
+                Luar biasa, Farah & Beatrix! Kalian telah merampungkan seluruh level kuis pecahan. Berikut adalah performa petualangan kalian hari ini:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                <div class="text-center">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Benar / Total</p>
+                    <p class="text-3xl font-black text-indigo-600 mt-1"><span id="result-correct-count">0</span> / 30</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Bintang Emas</p>
+                    <p class="text-3xl font-black text-amber-500 mt-1">⭐ <span id="result-stars-count">0</span></p>
+                </div>
+            </div>
+
+            <!-- Achievement Level Shield -->
+            <div id="achievement-shield" class="p-4 rounded-2xl max-w-md mx-auto text-sm font-bold"></div>
+
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                <button onclick="restartQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl transition-all">
+                    Ulangi Kuis
+                </button>
+                <a href="https://learn.algonova.id/login" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3 rounded-xl transition-all">
+                    Masuk ke Portal Algonova
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Copyright -->
+    <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-400">
+        <p>&copy; 2026 Algonova Interactive Learning System. Dibuat dengan cinta untuk Farah & Beatrix.</p>
+    </footer>
+
+    <!-- Interactive Script Logic with 30 Structured Questions -->
+    <script>
+        // Array of 30 Dynamic Fraction Questions
+        const questionsDatabase = [
+            // LEVEL 1: Dasar & Menyederhanakan (1-10)
+            {
+                level: 1,
+                question: "Sederhanakan pecahan berikut menjadi bentuk paling sederhana: $\\frac{8}{12}$",
+                options: ["$\\frac{2}{3}$", "$\\frac{3}{4}$", "$\\frac{4}{6}$", "$\\frac{1}{2}$"],
+                answer: 0,
+                rationale: "Pembilang dan penyebut kita bagi dengan FPB mereka yaitu 4. Jadi, $\\frac{8 \\div 4}{12 \\div 4} = \\frac{2}{3}$."
+            },
+            {
+                level: 1,
+                question: "Pecahan senilai dari $\\frac{2}{5}$ dengan penyebut 10 adalah...",
+                options: ["$\\frac{3}{10}$", "$\\frac{4}{10}$", "$\\frac{6}{10}$", "$\\frac{5}{10}$"],
+                answer: 1,
+                rationale: "Untuk mengubah penyebut dari 5 menjadi 10, kita mengalikan pembilang dan penyebut dengan angka 2. Sehingga $\\frac{2 \\times 2}{5 \\times 2} = \\frac{4}{10}$."
+            },
+            {
+                level: 1,
+                question: "Manakah yang bernilai lebih besar antara kedua pecahan berikut: $\\frac{1}{2}$ atau $\\frac{1}{4}$?",
+                options: ["$\\frac{1}{2}$", "$\\frac{1}{4}$", "Keduanya bernilai sama", "Tidak bisa ditentukan"],
+                answer: 0,
+                rationale: "Meskipun angka 4 lebih besar, $\\frac{1}{2}$ loyang pizza membagi pizza menjadi 2 bagian saja, sehingga ukurannya jauh lebih besar dibanding 1 bagian dari 4 potongan."
+            },
+            {
+                level: 1,
+                question: "Hitunglah hasil operasi pecahan berikut: $\\frac{2}{7} + \\frac{3}{7}$",
+                options: ["$\\frac{5}{14}$", "$\\frac{6}{7}$", "$\\frac{5}{7}$", "$\\frac{1}{7}$"],
+                answer: 2,
+                rationale: "Karena penyebutnya sudah sama-sama 7, kita tinggal menjumlahkan pembilangnya: $\\frac{2 + 3}{7} = \\frac{5}{7}$."
+            },
+            {
+                level: 1,
+                question: "Sederhanakan pecahan berikut: $\\frac{15}{25}$",
+                options: ["$\\frac{3}{5}$", "$\\frac{2}{5}$", "$\\frac{3}{4}$", "$\\frac{5}{5}$"],
+                answer: 0,
+                rationale: "FPB dari 15 dan 25 adalah 5. Kita bagi kedua angka dengan 5: $\\frac{15 \\div 5}{25 \\div 5} = \\frac{3}{5}$."
+            },
+            {
+                level: 1,
+                question: "Bentuk pecahan senilai dari $\\frac{3}{4}$ dengan penyebut 12 adalah...",
+                options: ["$\\frac{6}{12}$", "$\\frac{8}{12}$", "$\\frac{9}{12}$", "$\\frac{10}{12}$"],
+                answer: 2,
+                rationale: "Karena $4 \\times 3 = 12$, kita juga harus mengalikan pembilangnya dengan 3: $\\frac{3 \\times 3}{4 \\times 3} = \\frac{9}{12}$."
+            },
+            {
+                level: 1,
+                question: "Manakah pecahan yang lebih besar dari kedua pecahan ini: $\\frac{2}{3}$ atau $\\frac{3}{5}$?",
+                options: ["$\\frac{2}{3}$", "$\\frac{3}{5}$", "Kedua pecahan senilai", "Semua salah"],
+                answer: 0,
+                rationale: "Gunakan perkalian silang: $2 \\times 5 = 10$ dan $3 \\times 3 = 9$. Karena $10 > 9$, maka $\\frac{2}{3}$ lebih besar."
+            },
+            {
+                level: 1,
+                question: "Selesaikan operasi pengurangan berikut: $\\frac{8}{10} - \\frac{2}{10}$",
+                options: ["$\\frac{6}{10}$", "$\\frac{3}{5}$", "Kedua jawaban di atas benar", "Tidak ada yang benar"],
+                answer: 2,
+                rationale: "$\\frac{8}{10} - \\frac{2}{10} = \\frac{6}{10}$. Jika kita sederhanakan dengan membagi 2, hasilnya adalah $\\frac{3}{5}$. Jadi kedua opsi benar."
+            },
+            {
+                level: 1,
+                question: "Lengkapi titik-titik berikut dengan tanda perbandingan yang tepat: $\\frac{4}{8} \\text{ ... } \\frac{3}{6}$",
+                options: ["$<$", "$>$", "$=$", "$\\ge$"],
+                answer: 2,
+                rationale: "Kedua pecahan tersebut senilai karena jika disederhanakan, keduanya sama-sama bernilai setengah ($\\frac{1}{2}$)."
+            },
+            {
+                level: 1,
+                question: "Bentuk paling sederhana dari pecahan $\\frac{12}{16}$ adalah...",
+                options: ["$\\frac{3}{4}$", "$\\frac{6}{8}$", "$\\frac{2}{3}$", "$\\frac{4}{5}$"],
+                answer: 0,
+                rationale: "Bagi pembilang dan penyebut dengan FPB-nya yaitu 4: $\\frac{12 \\div 4}{16 \\div 4} = \\frac{3}{4}$."
+            },
+
+            // LEVEL 2: Pecahan Campuran & "Kali-Tambah" (11-20)
+            {
+                level: 2,
+                question: "Ubahlah pecahan campuran $1\\frac{1}{2}$ menjadi pecahan biasa!",
+                options: ["$\\frac{2}{2}$", "$\\frac{3}{2}$", "$\\frac{4}{2}$", "$\\frac{1}{2}$"],
+                answer: 1,
+                rationale: "Gunakan formula Kali-Tambah: $\\frac{(\\text{Bawah} \\times \\text{Samping}) + \\text{Atas}}{\\text{Bawah}} = \\frac{(2 \\times 1) + 1}{2} = \\frac{3}{2}$."
+            },
+            {
+                level: 2,
+                question: "Ubahlah pecahan campuran $2\\frac{3}{4}$ menjadi pecahan biasa!",
+                options: ["$\\frac{11}{4}$", "$\\frac{9}{4}$", "$\\frac{10}{4}$", "$\\frac{8}{4}$"],
+                answer: 0,
+                rationale: "Gunakan trik Kali-Tambah: $(4 \\times 2) + 3 = 11$. Penyebut tetap 4, sehingga menjadi $\\frac{11}{4}$."
+            },
+            {
+                level: 2,
+                question: "Ubahlah pecahan biasa berikut menjadi pecahan campuran: $\\frac{5}{2}$",
+                options: ["$1\\frac{1}{2}$", "$2\\frac{1}{2}$", "$2\\frac{3}{2}$", "$3\\frac{1}{2}$"],
+                answer: 1,
+                rationale: "$5 \\div 2 = 2$ sisa $1$. Letakkan angka 2 sebagai bilangan bulat di samping dan sisa 1 di atas penyebut 2: $2\\frac{1}{2}$."
+            },
+            {
+                level: 2,
+                question: "Ubahlah pecahan campuran $5\\frac{2}{3}$ menjadi pecahan biasa!",
+                options: ["$\\frac{13}{3}$", "$\\frac{17}{3}$", "$\\frac{15}{3}$", "$\\frac{10}{3}$"],
+                answer: 1,
+                rationale: "Kali-Tambah: $(3 \\times 5) + 2 = 15 + 2 = 17$. Penyebut tetap 3. Jadi pecahan biasanya adalah $\\frac{17}{3}$."
+            },
+            {
+                level: 2,
+                question: "Pecahan biasa dari campuran $3\\frac{2}{5}$ adalah...",
+                options: ["$\\frac{17}{5}$", "$\\frac{11}{5}$", "$\\frac{15}{5}$", "$\\frac{21}{5}$"],
+                answer: 0,
+                rationale: "Kali-Tambah: $(5 \\times 3) + 2 = 17$. Penyebut tetap 5, sehingga didapatkan pecahan biasa $\\frac{17}{5}$."
+            },
+            {
+                level: 2,
+                question: "Ubahlah pecahan biasa berikut menjadi pecahan campuran: $\\frac{11}{3}$",
+                options: ["$2\\frac{2}{3}$", "$3\\frac{1}{3}$", "$3\\frac{2}{3}$", "$4\\frac{1}{3}$"],
+                answer: 2,
+                rationale: "$11 \\div 3 = 3$ sisa $2$. Maka bentuk campuran yang didapatkan adalah $3\\frac{2}{3}$."
+            },
+            {
+                level: 2,
+                question: "Ubah pecahan campuran $4\\frac{1}{5}$ menjadi pecahan biasa!",
+                options: ["$\\frac{21}{5}$", "$\\frac{9}{5}$", "$\\frac{20}{5}$", "$\\frac{19}{5}$"],
+                answer: 0,
+                rationale: "Kali-Tambah: $(5 \\times 4) + 1 = 20 + 1 = 21$. Hasil pecahan biasa yang didapatkan adalah $\\frac{21}{5}$."
+            },
+            {
+                level: 2,
+                question: "Pecahan campuran paling tepat untuk pecahan biasa $\\frac{17}{5}$ adalah...",
+                options: ["$3\\frac{2}{5}$", "$2\\frac{7}{5}$", "$3\\frac{1}{5}$", "$4\\frac{1}{5}$"],
+                answer: 0,
+                rationale: "$17 \\div 5 = 3$ sisa $2$. Sisa ditulis sebagai pembilang pecahan, menjadi $3\\frac{2}{5}$."
+            },
+            {
+                level: 2,
+                // FIXED: Doubled the backslashes to correctly parse TeX and prevent JavaScript control-character collisions
+                question: "Konversikan $6\\frac{1}{4}$ menjadi pecahan biasa!",
+                options: ["$\\frac{25}{4}$", "$\\frac{24}{4}$", "$\\frac{11}{4}$", "$\\frac{26}{4}$"],
+                answer: 0,
+                rationale: "Terapkan formula Kali-Tambah: $(4 \\times 6) + 1 = 24 + 1 = 25$. Sehingga pecahan biasa adalah $\\frac{25}{4}$."
+            },
+            {
+                level: 2,
+                question: "Bentuk campuran dari pecahan biasa $\\frac{13}{4}$ adalah...",
+                options: ["$2\\frac{3}{4}$", "$3\\frac{1}{4}$", "$3\\frac{2}{4}$", "$4\\frac{1}{4}$"],
+                answer: 1,
+                rationale: "$13 \\div 4 = 3$ sisa $1$. Ditulis menjadi bilangan bulat 3 dengan sisa 1 di atas penyebut 4: $3\\frac{1}{4}$."
+            },
+
+            // LEVEL 3: Penjumlahan/Pengurangan Berbeda Penyebut (21-30)
+            {
+                level: 3,
+                question: "Berapakah Kelipatan Persekutuan Terkecil (KPK) dari penyebut 5 dan 2?",
+                options: ["5", "7", "10", "15"],
+                answer: 2,
+                rationale: "Kelipatan 5: 5, 10, 15... dan Kelipatan 2: 2, 4, 6, 8, 10... Kelipatan terkecil yang sama adalah 10."
+            },
+            {
+                level: 3,
+                question: "Hitunglah hasil dari penjumlahan pecahan beda penyebut berikut: $\\frac{1}{2} + \\frac{1}{4}$",
+                options: ["$\\frac{2}{6}$", "$\\frac{3}{4}$", "$\\frac{1}{2}$", "$\\frac{2}{4}$"],
+                answer: 1,
+                rationale: "Samakan penyebut menggunakan KPK 4. Maka $\\frac{1}{2}$ diubah menjadi $\\frac{2}{4}$. Operasi penjumlahannya: $\\frac{2}{4} + \\frac{1}{4} = \\frac{3}{4}$."
+            },
+            {
+                level: 3,
+                question: "Berapakah hasil penjumlahan dari $\\frac{1}{3} + \\frac{1}{2}$?",
+                options: ["$\\frac{2}{5}$", "$\\frac{5}{6}$", "$\\frac{3}{6}$", "$\\frac{4}{6}$"],
+                answer: 1,
+                rationale: "KPK dari 3 dan 2 adalah 6. Samakan penyebut pecahan: $\\frac{2}{6} + \\frac{3}{6} = \\frac{5}{6}$."
+            },
+            {
+                level: 3,
+                question: "Selesaikan operasi pengurangan pecahan ini: $\\frac{2}{3} - \\frac{1}{5}$",
+                options: ["$\\frac{1}{2}$", "$\\frac{7}{15}$", "$\\frac{8}{15}$", "$\\frac{1}{15}$"],
+                answer: 1,
+                rationale: "KPK dari 3 dan 5 adalah 15. Samakan penyebut: $\\frac{10}{15} - \\frac{3}{15} = \\frac{7}{15}$."
+            },
+            {
+                level: 3,
+                question: "Hasil penjumlahan pecahan campuran: $1\\frac{1}{2} + \\frac{1}{4}$ adalah...",
+                options: ["$1\\frac{2}{4}$", "$1\\frac{3}{4}$", "$2\\frac{1}{4}$", "$1\\frac{1}{2}$"],
+                answer: 1,
+                rationale: "$1\\frac{1}{2}$ diubah menjadi pecahan biasa $\\frac{3}{2}$ atau $\\frac{6}{4}$. Penjumlahan: $\\frac{6}{4} + \\frac{1}{4} = \\frac{7}{4}$ yang setara dengan $1\\frac{3}{4}$."
+            },
+            {
+                level: 3,
+                question: "Ibu memiliki $2\\frac{3}{4}$ kg tepung. Digunakan untuk membuat kue sebanyak $1\\frac{1}{2}$ kg. Berapakah sisa tepung Ibu?",
+                options: ["$1\\frac{1}{4}$ kg", "$1\\frac{1}{2}$ kg", "$2\\frac{1}{4}$ kg", "$1\\frac{3}{4}$ kg"],
+                answer: 0,
+                rationale: "Lakukan pengurangan: $2\\frac{3}{4} - 1\\frac{1}{2} = 2\\frac{3}{4} - 1\\frac{2}{4}$. Hasil akhirnya adalah $1\\frac{1}{4}$ kg."
+            },
+            {
+                level: 3,
+                // FIXED: Enclosed both fractions in appropriate inline TeX $ delimiters and escaped backslashes properly
+                question: "Farah berlari sejauh $2\\frac{1}{4}$ km, lalu berjalan kaki sejauh $\\frac{3}{5}$ km. Berapakah total jarak yang ditempuh Farah?",
+                options: ["$2\\frac{4}{9}$ km", "$2\\frac{17}{20}$ km", "$2\\frac{15}{20}$ km", "$3\\frac{1}{20}$ km"],
+                answer: 1,
+                rationale: "KPK dari 4 dan 5 adalah 20. Ubah pecahan: $2\\frac{5}{20} + \\frac{12}{20} = 2\\frac{17}{20}$ km."
+            },
+            {
+                level: 3,
+                question: "Hitunglah penjumlahan pecahan berikut: $4\\frac{2}{5} + 2\\frac{1}{2}$",
+                options: ["$6\\frac{9}{10}$", "$6\\frac{3}{7}$", "$7\\frac{1}{10}$", "$6\\frac{1}{10}$"],
+                answer: 0,
+                rationale: "Konversikan ke penyebut 10: $4\\frac{4}{10} + 2\\frac{5}{10} = 6\\frac{9}{10}$."
+            },
+            {
+                level: 3,
+                question: "Manakah pecahan yang lebih besar secara nilai: $\\frac{7}{3}$ atau $2\\frac{1}{4}$?",
+                options: ["$\\frac{7}{3}$", "$2\\frac{1}{4}$", "Keduanya bernilai sama", "Semua salah"],
+                answer: 0,
+                rationale: "$\\frac{7}{3}$ jika dijadikan desimal adalah sekitar $2.33$, sedangkan $2\\frac{1}{4}$ adalah $2.25$. Jadi $\\frac{7}{3}$ lebih besar."
+            },
+            {
+                level: 3,
+                question: "Sederhanakan hasil dari $\\frac{8}{10} + \\frac{2}{5}$ ke bentuk pecahan campuran terkecil!",
+                options: ["$1\\frac{1}{5}$", "$1\\frac{2}{10}$", "$1\\frac{1}{2}$", "$1\\frac{2}{5}$"],
+                answer: 0,
+                rationale: "Ubah $\\frac{2}{5}$ menjadi pecahan senilai $\\frac{4}{10}$. Hasil penjumlahan: $\\frac{8}{10} + \\frac{4}{10} = \\frac{12}{10} = 1\\frac{2}{10}$ yang disederhanakan menjadi $1\\frac{1}{5}$."
+            }
+        ];
+
+        // Quiz State Management Variables
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let stars = 0;
+        let answerSelected = false;
+        
+        // Intelligent navigation history to preserve selected answers across "Back" actions
+        let questionStates = Array(30).fill(null);
+
+        // Elements Referencing
+        const screenStart = document.getElementById('screen-start');
+        const screenQuiz = document.getElementById('screen-quiz');
+        const screenResult = document.getElementById('screen-result');
+        
+        const questionText = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+        const questionProgress = document.getElementById('question-progress');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const levelBadge = document.getElementById('level-badge');
+        const starCountDisplay = document.getElementById('star-count-display');
+        const prevQuestionBtn = document.getElementById('prev-question-btn');
+        
+        const explanationContainer = document.getElementById('explanation-container');
+        const explanationIcon = document.getElementById('explanation-icon');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const nextButtonText = document.getElementById('next-button-text');
+
+        // Start Kuis Function
+        function startQuiz() {
+            screenStart.classList.add('hidden');
+            screenQuiz.classList.remove('hidden');
+            screenResult.classList.add('hidden');
+            currentQuestionIndex = 0;
+            score = 0;
+            stars = 0;
+            questionStates = Array(30).fill(null);
+            starCountDisplay.textContent = stars;
+            loadQuestion();
+        }
+
+        // Load Question Function
+        function loadQuestion() {
+            answersContainer.innerHTML = '';
+
+            const currentQ = questionsDatabase[currentQuestionIndex];
+            
+            // Render Level Badge
+            if (currentQ.level === 1) {
+                levelBadge.textContent = "🟢 LEVEL 1: FONDASI DASAR";
+                levelBadge.className = "px-3 py-1.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800";
+            } else if (currentQ.level === 2) {
+                levelBadge.textContent = "🟡 LEVEL 2: PECAHAN CAMPURAN";
+                levelBadge.className = "px-3 py-1.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800";
+            } else {
+                levelBadge.textContent = "🔴 LEVEL 3: ARSITEK PECAHAN";
+                levelBadge.className = "px-3 py-1.5 text-xs font-bold rounded-full bg-rose-100 text-rose-800";
+            }
+
+            // Set Progress Text and Progress Bar Width
+            questionProgress.textContent = `Soal ${currentQuestionIndex + 1} dari 30`;
+            const progressPercent = ((currentQuestionIndex + 1) / questionsDatabase.length) * 100;
+            progressBarFill.style.width = `${progressPercent}%`;
+
+            // Enable/Disable Back Button based on current index
+            prevQuestionBtn.disabled = (currentQuestionIndex === 0);
+
+            // Insert Question Text
+            questionText.textContent = currentQ.question;
+
+            // Load saved state (if they had already answered this question and went back/forward)
+            const savedState = questionStates[currentQuestionIndex];
+
+            if (savedState !== null) {
+                answerSelected = true;
+
+                // Render answer buttons with locks & original performance highlights
+                currentQ.options.forEach((option, idx) => {
+                    const btn = document.createElement('button');
+                    btn.disabled = true;
+
+                    if (idx === currentQ.answer) {
+                        // This is the correct answer
+                        btn.className = "w-full text-left bg-emerald-50 border-2 border-emerald-500 p-4 rounded-2xl font-bold text-emerald-800 text-lg flex justify-between items-center cursor-not-allowed";
+                        btn.innerHTML = `<span>${option}</span><span class="indicator text-xl">✅</span>`;
+                    } else if (idx === savedState.selectedIndex) {
+                        // This was the incorrect option chosen
+                        btn.className = "w-full text-left bg-rose-50 border-2 border-rose-500 p-4 rounded-2xl font-bold text-rose-800 text-lg flex justify-between items-center cursor-not-allowed";
+                        btn.innerHTML = `<span>${option}</span><span class="indicator text-xl">❌</span>`;
+                    } else {
+                        // Unselected other options
+                        btn.className = "w-full text-left bg-white border-2 border-slate-100 p-4 rounded-2xl font-semibold text-lg flex justify-between items-center cursor-not-allowed opacity-60";
+                        btn.innerHTML = `<span>${option}</span><span class="indicator text-xl"></span>`;
+                    }
+
+                    answersContainer.appendChild(btn);
+                });
+
+                // Display explanation immediately
+                explanationContainer.classList.remove('hidden');
+                if (savedState.isCorrect) {
+                    explanationContainer.className = "p-5 rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-800";
+                    explanationIcon.textContent = "🎉";
+                    explanationTitle.textContent = "Hebat! Jawabanmu Benar!";
+                } else {
+                    explanationContainer.className = "p-5 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800";
+                    explanationIcon.textContent = "💡";
+                    explanationTitle.textContent = "Kurang Tepat, Mari Pelajari Caranya:";
+                }
+                explanationText.innerHTML = currentQ.rationale;
+
+                if (currentQuestionIndex === questionsDatabase.length - 1) {
+                    nextButtonText.textContent = "Lihat Hasil Akhir";
+                } else {
+                    nextButtonText.textContent = "Soal Berikutnya";
+                }
+            } else {
+                // Interactive state for unanswered questions
+                answerSelected = false;
+                explanationContainer.classList.add('hidden');
+
+                // Generate active clickable choice buttons
+                currentQ.options.forEach((option, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-indigo-400 p-4 rounded-2xl font-semibold text-lg transition-all focus:outline-none flex justify-between items-center";
+                    btn.innerHTML = `<span>${option}</span><span class="indicator text-xl"></span>`;
+                    btn.onclick = () => selectAnswer(idx, btn);
+                    answersContainer.appendChild(btn);
+                });
+            }
+
+            // Trigger MathJax Typesetting to compile dynamically created equations
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Handle Answer Selection
+        function selectAnswer(selectedIndex, clickedButton) {
+            if (answerSelected) return; // Prevent clicking multiple answers
+            answerSelected = true;
+
+            const currentQ = questionsDatabase[currentQuestionIndex];
+            const allOptionButtons = answersContainer.querySelectorAll('button');
+
+            const isCorrect = (selectedIndex === currentQ.answer);
+
+            // Save question state
+            questionStates[currentQuestionIndex] = {
+                selectedIndex: selectedIndex,
+                isCorrect: isCorrect
+            };
+
+            // Recalculate current score and star balances
+            score = questionStates.filter(s => s !== null && s.isCorrect).length;
+            stars = score * 5;
+            starCountDisplay.textContent = stars;
+
+            // Render explanation dialog container
+            explanationContainer.classList.remove('hidden');
+
+            if (isCorrect) {
+                clickedButton.className = "w-full text-left bg-emerald-50 border-2 border-emerald-500 p-4 rounded-2xl font-bold text-emerald-800 text-lg transition-all flex justify-between items-center";
+                clickedButton.querySelector('.indicator').textContent = "✅";
+
+                explanationContainer.className = "p-5 rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-800 animate-fade-in";
+                explanationIcon.textContent = "🎉";
+                explanationTitle.textContent = "Hebat! Jawabanmu Benar!";
+            } else {
+                clickedButton.className = "w-full text-left bg-rose-50 border-2 border-rose-500 p-4 rounded-2xl font-bold text-rose-800 text-lg transition-all flex justify-between items-center";
+                clickedButton.querySelector('.indicator').textContent = "❌";
+
+                // Highlight correct choice automatically
+                allOptionButtons[currentQ.answer].className = "w-full text-left bg-emerald-50 border-2 border-emerald-400 p-4 rounded-2xl font-semibold text-emerald-800 text-lg transition-all flex justify-between items-center";
+                allOptionButtons[currentQ.answer].querySelector('.indicator').textContent = "✨";
+
+                explanationContainer.className = "p-5 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800 animate-fade-in";
+                explanationIcon.textContent = "💡";
+                explanationTitle.textContent = "Kurang Tepat, Mari Pelajari Caranya:";
+            }
+
+            // Put dynamic explanation markup
+            explanationText.innerHTML = currentQ.rationale;
+
+            // Change Next Button Text on the last question
+            if (currentQuestionIndex === questionsDatabase.length - 1) {
+                nextButtonText.textContent = "Lihat Hasil Akhir";
+            } else {
+                nextButtonText.textContent = "Soal Berikutnya";
+            }
+
+            // Disallow clicking other options on the fly
+            allOptionButtons.forEach(btn => btn.disabled = true);
+
+            // Typeset LaTeX inside explanation dynamically
+            if (window.MathJax) {
+                MathJax.typesetPromise([explanationContainer, answersContainer]);
+            }
+        }
+
+        // Action: Back to the previous question
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        // Navigate to next question or screen result
+        function nextQuestion() {
+            // Guard: Must answer the question before moving forward
+            if (!answerSelected) return;
+
+            if (currentQuestionIndex < questionsDatabase.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Show Results Screen
+        function showResults() {
+            screenQuiz.classList.add('hidden');
+            screenResult.classList.remove('hidden');
+
+            document.getElementById('result-correct-count').textContent = score;
+            document.getElementById('result-stars-count').textContent = stars;
+
+            const shield = document.getElementById('achievement-shield');
+            
+            // Dynamic Rank Allocation Based on Score
+            if (score === 30) {
+                shield.textContent = "🏆 ARSITEK PECAHAN PARIPURNA (Skor Sempurna!)";
+                shield.className = "p-4 rounded-2xl max-w-md mx-auto text-sm font-bold bg-emerald-100 text-emerald-800";
+            } else if (score >= 24) {
+                shield.textContent = "🥇 MASTER PECAHAN ELITE (Luar Biasa!)";
+                shield.className = "p-4 rounded-2xl max-w-md mx-auto text-sm font-bold bg-indigo-100 text-indigo-800";
+            } else if (score >= 15) {
+                shield.textContent = "🥈 PEJUANG PECAHAN HANDAL (Bagus Sekali!)";
+                shield.className = "p-4 rounded-2xl max-w-md mx-auto text-sm font-bold bg-amber-100 text-amber-800";
+            } else {
+                shield.textContent = "🥉 ARSITEK MAGANG (Teruskan Berlatih!)";
+                shield.className = "p-4 rounded-2xl max-w-md mx-auto text-sm font-bold bg-slate-100 text-slate-800";
+            }
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+# Quiz-Pecahan-SMP-Beatrix-dan-Farah-
